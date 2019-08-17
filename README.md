@@ -4,6 +4,14 @@ Create and use a standard GitHub repository. As this is a CLI App, it cannot be 
 
 In order to meet the Employer Competitive standards and be ready to show your application to employers, the `README.md` file should meet the following criteria:
 
+Putting through commands for movies, songs, band concerts to find information based on what you're searching
+
+If you search for a movie you will get information on 
+if you don't type in a certain move under movie-this you will get information on the film 'mr. nobody'
+
+If you search for a song you will get information on 
+
+If you search for an artist you will get information on 
 
 1. Clearly state the problem the app is trying to solve (i.e. what is it doing and why)
 2. Give a high-level overview of how the app is organized
