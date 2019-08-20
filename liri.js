@@ -10,67 +10,39 @@ var axios = require("axios");
 var command = process.argv[2];
 var params = [];
 
-//
-
-switch (command) {
-  case "movie-this":
-    MovieThis();
-    //default: ("call mr. nobody here");
-    break;
-  case "concert-this":
-    bands();
-    break;
-  case "spotify-this-song":
-    spotifySong();
-    break;
-  case "do-what-it-says":
-    console.log("");
-    break;
-
-  default: 
-    console.log("whoops..testput in something that calls outside of these ");
-}
-
-// <
-// what is wrong here??
 for (var i = 3; i < process.argv.length; i++) {
  params.push(process.argv[i]);
-  //everything inside this for loop
 
-  console.log(params);
-  console.log(command);
+  switch (command) {
+    case "movie-this":
+      movieThis(params);
+      //default: ("call mr. nobody here");
+      break;
+    case "concert-this":
+      bands(params);
+      break;
+    case "spotify-this-song":
+      spotifySong(params);
+      break;
+    case "do-what-it-says":
+      console.log("");
+      break;
   
-    // call each one in a switch statement
-  
-  function bands() {
-    var bandName = process.argv[3];
-      var queryBandURL = "https://rest.bandsintown.com/artists/"+ bandName +"/events?app_id=codingbootcamp";
-      axios.get(queryBandURL).then(
-          function(response) {
-              console.log(queryBandURL);
-              console.log("Venue: " + response.data.venue.name + 
-              "\nLocation: " + response.data.venue.country + "\nDate: " + response.data.datetime);
-         }
-     
-        )
-  
-  }
-      
-    
-  //how to make string again, so if band has 2 words it still goes through
-  
-  function spotifySong() {
-      var songTitle = process.argv[3];
-      var querySongURL = "https://developer.spotify.com/dashboard/applications/" + spotify;
-      console.log(querySongURL);
-  
+    default: 
+      console.log("whoops.. try again");
   };
-  
 
-  function MovieThis() {
+  //console.log(params);
+  //console.log(command);
+
+
+  function movieThis() {
     var movieName = process.argv[3];
     var queryMovieURL = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy"
-    
+    // console.log(params);
+    if (!movieName) {
+         movieName = "mr. nobody";
+    }
     axios.get(queryMovieURL).then(
       function(response) {
           console.log("Title: " + response.data.Title + "\nYear Released: " + response.data.Year + "\nIMDB Rating: " +
@@ -95,40 +67,45 @@ for (var i = 3; i < process.argv.length; i++) {
         });
   
   };
-     
-      //if (movieName === undefined){
-       //   movieName = "mr. nobody";
-    //  }
-  
-   
-  
-            //MovieThis[command][movieName]();
-  
-  
-  
-       
-
-
-
-};
-
-
 
     
-// example
-function programmer(name, job, age, favorite) {
-  this.name = name;
-  this.job = job;
-  this.age = age;
-  this.favorite = favorite;
+  function bands() {
+    var bandName = process.argv[3];
+      var queryBandURL = "https://rest.bandsintown.com/artists/"+ bandName +"/events?app_id=codingbootcamp";
+      axios.get(queryBandURL).then(
+        function(response) {
+          var jsonData = response.data[0];
+              console.log(queryBandURL);
+              console.log("Artist: " + bandName + "\nVenue: " + jsonData.venue.name + 
+              "\nLocation: " + jsonData.venue.country + "\nDate: " + jsonData.datetime);
+         })
+         .catch(function(error) {
+          if (error.response) {
+            console.log("---------------Data---------------");
+            console.log(error.response.data);
+            console.log("---------------Status---------------");
+            console.log(error.response.status);
+            console.log("---------------Status---------------");
+            console.log(error.response.headers);
+          } else if (error.request) {
+            console.log(error.request);
+          } else {
+            console.log("Error", error.message);
+          }
+          console.log(error.config);
+        });
   
-  this.print = function() {
-      console.log("Name: " + this.name + "\nJob: " + this.job
-                  + "\nAge: " + this.age + "\nFavorite: " + this.favorite);
-  }
+  };
+      
+  //how to make string again, so if band has 2 words it still goes through
   
-  }
+  function spotifySong() {
+      var songTitle = process.argv[3];
+      var querySongURL = "https://developer.spotify.com/dashboard/applications/" + spotify;
+      console.log(querySongURL);
+      //connect to keys.js, need to finish coding this portion
   
-  var program = new programmer("Molly", "Programmer", "26", "Javascript");
-  program.print();
-
+  };
+  
+  
+};
